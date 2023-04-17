@@ -1,32 +1,55 @@
-#!/pyenvs/ROS544proj/bin/env python
+#!/pyenvs/ROSproj/bin/env python
 
 import rospy
-from geometry_msgs.msg import Pose2D
+from geometry_msgs.msg import Pose2D, Twist
+from std_msgs.msg import Header
 
-#initialize the ROS node:
+lastTime = None
+posePub = None
+
+#initialize the robot node:
 rospy.init_node('robotNode',anonymous=True)
 
-#Create the publisher for /pose topic:
+#create the publisher for /pose topic:
 posePub = rospy.Publisher('/pose', Pose2D)
 
+def robotPoseCallback(twistMsg):
+    global posePub
+    #calculate time elapsed from last 
+    global lastTime
+    currentTime = rospy.Time.now()
+    if lastTime is not None:
+        dt = (currentTime-lastTime).to_sec()
 
-def publisher():
-    posePub = rospy.Publisher('/pose',Pose2D)
-    rospy.init_node('robotNode',anonymous=True)
-    rate = rospy.Rate(10) #10Hz
-    while not rospy.is_shutdown():
-        #do stuff
-        #create pose message object
+        #use received twist message to update position values:
+        pose.x += twistMsg.linear.x*dt
+        pose.y += twistMsg.linear.y*dt
+        pose.theta += twistMsg.angular.z*dt
+
         pose_msg = Pose2D()
-        #set pose values:
-        pose_msg.x = 1.0;
-        pose_msg.y = 2.0;
-        pose_msg.theta = 0.0;
-        posePub.publish(pose_msg)
-        rate.sleep()
+        pose_msg.x = pose.x
+        pose_msg.y = pose.y
+        pose_msg.theta = pose.theta
 
+        #publish the updated pose
+        posePub.publish(pose_msg)
+    #update lastTime for next loop:
+    lastTime = currentTime
+    
+def main():
+    #create a subscriber to receive /cmd_vel topic messages:
+    rospy.Subscriber('/cmd_vel',Twist,robotPoseCallback)
+
+    #give initial pose values:
+    pose = Pose2D()
+    pose.x = 0.0
+    pose.y = 0.0
+    pose.theta = 0.0
+
+    #start the node:
+    rospy.spin()
 if __name__ == '__main__':
     try:
-        publisher()
+        main()
     except rospy.ROSInterruptException:
         pass
