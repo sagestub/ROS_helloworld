@@ -45,6 +45,7 @@ def main():
     pose.x = 0.0
     pose.y = 0.0
     pose.theta = 0.0
+    posePub.publish(pose)
 
     #start the node:
     rospy.spin()
