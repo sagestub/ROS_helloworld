@@ -1,0 +1,2 @@
+
+-DCATKIN_DEVEL_PREFIX=/home/sage/Documents/ROS_helloworld/exp2_ws/devel -DCMAKE_INSTALL_PREFIX=/home/sage/Documents/ROS_helloworld/exp2_ws/install -G Unix Makefiles

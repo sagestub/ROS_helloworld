@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/sage/Documents/ROS_helloworld/exp2_ws/devel/setup.sh

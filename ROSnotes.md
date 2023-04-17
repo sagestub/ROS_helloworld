@@ -21,12 +21,23 @@ ROS setup steps:
     - you can do this using : `echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc`
 
 To create a ROS package:
-- Create a directory for the package, and give it a subfolder "src" `mkdir -p ~/rosPkgEx/src` the '-p' tells the shell to create any parent directories as needed
-- navigate inside the directory `cd ~/rosPkgEx`
+- Create a directory for the workspace, and give it a subfolder "src" `mkdir -p ~/rosPkgEx_ws/src` the '-p' tells the shell to create any parent directories as needed
+- navigate inside the directory `cd ~/rosPkgEx_ws`
 - execute `catkin_make`  - this will build, amongst other details, a "build" and "devel" folder in your directory in parallel to the "src" file you've already created
-- navigate inside the "src" folder `cd /src` and run `catkin_create_pkg package_name rospy type_of_ROS_pkg`
-    - this will create a folder for your package, /rosPkgEx/src/package_name and populate a package.xml and CMakeLists.txt
-- navigate back up to your workspace parent directory `cd ..` and run `catkin_make` to create the package - this will populate your build folder with the package files
+- navigate inside the "src" folder (`cd /src`) and run `catkin_create_pkg package_name rospy type_of_ROS_pkg`
+    - this will create a folder for your package, /rosPkgEx_ws/src/package_name and populate a package.xml and CMakeLists.txt
+    - most times,  you will not need to specify the type of package
+    - Python code, e.g., node.py can be created within the package_name directory
+    - be sure to add any python files to CMakeLists.txt:
+        ```bash
+        ## Declare a python executable
+        add_executable(node src/node.py)
+        ## add dependencies to the executable
+        add_dependencies(node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+        ## Specify libraries to link a library or executable target against
+        target_link_libraries(node ${catkin_LIBRARIES})
+        ```
+- navigate back up to your workspace parent directory `cd ..` and run `catkin_make` again to compile changes and create the package dependencies- this will populate your build folder with the package files
 - can add `source ~/rosPkgEx/devel/setup.bash` to the .bashrc so that the system can find your package when running
 
 Connecting nodes/ Network stuff:
