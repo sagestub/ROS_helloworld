@@ -1,4 +1,4 @@
-#!/pyenvs/ROS544proj/bin/env python
+#!/pyenvs/ROS544proj/bin/python3
 
 import numpy as np
 import rospy
