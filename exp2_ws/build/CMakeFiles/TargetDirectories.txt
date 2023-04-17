@@ -35,3 +35,11 @@
 /home/sage/Documents/ROS_helloworld/exp2_ws/build/gtest/googletest/CMakeFiles/test.dir
 /home/sage/Documents/ROS_helloworld/exp2_ws/build/gtest/googletest/CMakeFiles/gtest_main.dir
 /home/sage/Documents/ROS_helloworld/exp2_ws/build/gtest/googletest/CMakeFiles/gtest.dir
+/home/sage/Documents/ROS_helloworld/exp2_ws/build/waypoint_follower/CMakeFiles/install/strip.dir
+/home/sage/Documents/ROS_helloworld/exp2_ws/build/waypoint_follower/CMakeFiles/install/local.dir
+/home/sage/Documents/ROS_helloworld/exp2_ws/build/waypoint_follower/CMakeFiles/install.dir
+/home/sage/Documents/ROS_helloworld/exp2_ws/build/waypoint_follower/CMakeFiles/list_install_components.dir
+/home/sage/Documents/ROS_helloworld/exp2_ws/build/waypoint_follower/CMakeFiles/rebuild_cache.dir
+/home/sage/Documents/ROS_helloworld/exp2_ws/build/waypoint_follower/CMakeFiles/edit_cache.dir
+/home/sage/Documents/ROS_helloworld/exp2_ws/build/waypoint_follower/CMakeFiles/test.dir
+/home/sage/Documents/ROS_helloworld/exp2_ws/build/waypoint_follower/CMakeFiles/_catkin_empty_exported_target.dir
