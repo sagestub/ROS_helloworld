@@ -1,4 +1,4 @@
-#!/pyenvs/ROS544proj/bin/python3
+#!/home/sage/pyenvs/ROS544proj/bin/python3
 
 import numpy as np
 import rospy
@@ -8,7 +8,7 @@ from geometry_msgs.msg import Pose2D, Twist
 rospy.init_node('controllerNode',anonymous=True)
 
 #create the publisher for /cmd_vel topic:
-twistPub = rospy.Publisher('/cmd_vel', Pose2D)
+twistPub = rospy.Publisher('/cmd_vel', Twist,queue_size=10)
 
 #create global variables:
 cmd_vel = None
@@ -67,7 +67,7 @@ def main():
     global twistPub
     global cmd_vel
     #create a subscriber to receive /pose topic messages:
-    rospy.Subscriber('/pose',Twist,cmd_velControllerCallback)
+    rospy.Subscriber('/pose',Pose2D,cmd_velControllerCallback)
 
     #give initial command values:
     if cmd_vel is None:

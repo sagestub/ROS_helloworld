@@ -1,4 +1,4 @@
-#!/pyenvs/ROS544proj/bin/python3
+#!/home/sage/pyenvs/ROS544proj/bin/python3
 
 import rospy
 from geometry_msgs.msg import Pose2D, Twist
@@ -11,7 +11,7 @@ posePub = None
 rospy.init_node('robotNode',anonymous=True)
 
 #create the publisher for /pose topic:
-posePub = rospy.Publisher('/pose', Pose2D)
+posePub = rospy.Publisher('/pose', Pose2D,queue_size=10)
 
 def robotPoseCallback(twistMsg):
     global posePub
