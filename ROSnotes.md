@@ -44,3 +44,11 @@ Connecting nodes/ Network stuff:
 - connect to orangepi over ssh using `ssh orangepi@192.168.1.29`
 - connect to stanley-linux using `ssh sage@192.168.1.33`
 
+Running ROS:
+- in a new terminal tab, run `roscore`
+- in a new terminal tab, run  `source ~/Documents/ROS_helloworld/exp2_ws/devel/setup.bash` to get all the ROS packages available from your workspace
+- in a new? terminal tab, run `source ~/pyenvs/ROS544proj/bin/activate` to activate the python environment required
+    - next, run `rosrun waypoint_follower robotNode.py` (rosrun package_name node_name)
+    - repeat for other nodes
+- run `rosrun rqt_graph rqt_graph` to visualize nodes
+- run `rostopic list` or `rosnode list` to visualize topics and nodes, respectively
