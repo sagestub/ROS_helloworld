@@ -10,11 +10,11 @@ os.environ['ROS_MASTER_URI'] = 'http://192.168.1.33:11311'
 
 #initialize the controller node:
 rospy.init_node('controllerNode',anonymous=True)
-print("initialized controller node")
+print("controllerNode: Initialized")
 
 #create the publisher for /cmd_vel topic:
-twistPub = rospy.Publisher('/cmd_vel', Twist,latch=True,queue_size=10)
-print("created /cmd_vel publisher")
+twistPub = rospy.Publisher('/cmd_vel', Twist,queue_size=10)
+print("controllerNode: created /cmd_vel publisher")
 
 #create global variables:
 cmd_vel = None
@@ -32,8 +32,7 @@ waypoints = np.array([[0,0],[4.63202999999382,-2.80608000000182],[4.226879999991
         [0.451769999995122,3.11577000000074],[-2.67954000000188,1.97247000000065],[0,0]])
 
 def cmd_velControllerCallback(poseMsg):
-    print("executing controller callback")
-    print(poseMsg)
+    print("controllerNode: callback updating /cmd_vel")
     global twistPub
     global cmd_vel
     global goal
@@ -44,8 +43,8 @@ def cmd_velControllerCallback(poseMsg):
     #use received pose message to update position values:
     dx = waypoints[goal,0]-poseMsg.x
     dy = waypoints[goal,1]-poseMsg.y
-    print("pose is: "+str(poseMsg.x) + " " + str(poseMsg.y)+" "+str(poseMsg.w))
-    print("dx and dy: "+str(dx)+" "+str(dy))
+    # print("pose is: "+str(poseMsg.x) + " " + str(poseMsg.y)+" "+str(poseMsg.w))
+    # print("dx and dy: "+str(dx)+" "+str(dy))
     
     #calculate position and heading error
     rho = np.sqrt(dx**2+dy**2)
@@ -75,13 +74,14 @@ def cmd_velControllerCallback(poseMsg):
 
     #publish the updated pose
     twistPub.publish(twist_msg)
-    print("published twist message")
+    print("controllerNode: published /cmd_vel")
     
 def main():
     global twistPub
     global cmd_vel
 
-    print("creating /pose subscriber")
+    # while not rospy.is_shutdown():
+    print("controllerNode: creating /pose subscriber")
     #create a subscriber to receive /pose topic messages:
     rospy.Subscriber('/pose',Quaternion,cmd_velControllerCallback)
 
