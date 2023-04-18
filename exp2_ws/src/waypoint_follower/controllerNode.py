@@ -1,18 +1,24 @@
 #!/home/sage/pyenvs/ROS544proj/bin/python3
 
+import os
 import numpy as np
 import rospy
 from geometry_msgs.msg import Pose2D, Twist
 
+#specify ros master
+os.environ['ROS_MASTER_URI'] = 'http://192.168.1.33:11311'
+
 #initialize the controller node:
 rospy.init_node('controllerNode',anonymous=True)
+print("initialized controller node")
 
 #create the publisher for /cmd_vel topic:
 twistPub = rospy.Publisher('/cmd_vel', Twist,queue_size=10)
+print("created /cmd_vel publisher")
 
 #create global variables:
 cmd_vel = None
-goal = None
+goal = 1
 waypoints = np.array([[0,0],[4.63202999999382,-2.80608000000182],[4.22687999999141,-0.530580000001208],\
         [6.53789999999304,0.983460000001415],[7.07402999999601,1.89032999999903],\
         [8.01420000000419,2.35320000000161],[8.37162000000092,3.39437999999927],\
@@ -26,17 +32,24 @@ waypoints = np.array([[0,0],[4.63202999999382,-2.80608000000182],[4.226879999991
         [0.451769999995122,3.11577000000074],[-2.67954000000188,1.97247000000065],[0,0]])
 
 def cmd_velControllerCallback(poseMsg):
+    print("executing controller callback")
+    print(poseMsg)
     global twistPub
     global cmd_vel
     global goal
     global waypoints
+    kp = 1
+    ka = 3
+    vmax = 1.5
     #use received pose message to update position values:
-    dx = waypoints[goal,0]-poseMsg.X
-    dy = waypoints[goal,1]-poseMsg.Y
-
+    dx = waypoints[goal,0]-poseMsg.x
+    dy = waypoints[goal,1]-poseMsg.y
+    print("pose is: "+str(poseMsg.x) + " " + str(poseMsg.y)+" "+str(poseMsg.theta))
+    print("dx and dy: "+str(dx)+" "+str(dy))
+    
     #calculate position and heading error
-    rho = np.sqrt(dx^2+dy^2)
-    alpha = -poseMsg.Theta+np.atan2(dy,dx)
+    rho = np.sqrt(dx**2+dy**2)
+    alpha = -poseMsg.theta+np.arctan2(dy,dx)
 
     #determine control goal and state:
     if rho < 0.1: #if close enough to current waypoint, start going next waypoint
@@ -53,8 +66,8 @@ def cmd_velControllerCallback(poseMsg):
         w = ka*alpha #min(ka*alpha,wmax)*np.sign(ka*apha)
 
     twist_msg = Twist()
-    twist_msg.linear.x = v*np.cos(poseMsg.Theta)
-    twist_msg.linear.y = v*np.sin(poseMsg.Theta)
+    twist_msg.linear.x = v*np.cos(poseMsg.theta)
+    twist_msg.linear.y = v*np.sin(poseMsg.theta)
     twist_msg.linear.z = 0.0
     twist_msg.angular.x = 0.0
     twist_msg.angular.y = 0.0
@@ -62,27 +75,17 @@ def cmd_velControllerCallback(poseMsg):
 
     #publish the updated pose
     twistPub.publish(twist_msg)
+    print("published twist message")
     
 def main():
     global twistPub
     global cmd_vel
+
+    print("creating /pose subscriber")
     #create a subscriber to receive /pose topic messages:
     rospy.Subscriber('/pose',Pose2D,cmd_velControllerCallback)
 
-    #give initial command values:
-    if cmd_vel is None:
-        cmd_vel = Twist()
-        cmd_vel.linear.x = 0.0
-        cmd_vel.linear.y = 0.0
-        cmd_vel.linear.z = 0.0
-        cmd_vel.angular.x = 0.0
-        cmd_vel.angular.y = 0.0
-        cmd_vel.angular.z = 0.0
-
-    #start the node:
+    #keep the node going:
     rospy.spin()
 if __name__ == '__main__':
-    try:
-        main()
-    except rospy.ROSInterruptException:
-        pass
+    main()
