@@ -6,6 +6,7 @@ from geometry_msgs.msg import Quaternion, Twist
 
 #initialize global variables
 pose_msg= None
+lastTime = None
 
 #specify ros master
 os.environ['ROS_MASTER_URI'] = 'http://192.168.1.33:11311'
@@ -22,19 +23,24 @@ def robotPoseCallback(twistMsg):
     print("robotNode: callback updating pose")
     global posePub
     global pose_msg
-    dt = 0.1
+    global lastTime
+    currentTime=rospy.Time.now()
 
     #calculate updated position
     if pose_msg is None: #if first time executing
         #give initial pose values:
         pose_msg = Quaternion(x=0.0, y=0.0, z=0.0, w=0.0)
-    
+        dt = 0.1 #dummy initial timestep
     else:
+        if lastTime is not None:
+            dt=(currentTime-lastTime).to_sec()
+        else: dt=0.1
         #use received twist message to update position values:
         pose_msg.x += twistMsg.linear.x*dt
         pose_msg.y += twistMsg.linear.y*dt
         pose_msg.z = 0.0
         pose_msg.w += twistMsg.angular.z*dt
+        lastTime= currentTime
 
     #publish the updated pose
     posePub.publish(pose_msg)
