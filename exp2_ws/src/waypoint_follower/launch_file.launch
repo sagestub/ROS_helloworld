@@ -3,6 +3,5 @@
   <node pkg="waypoint_follower" type="controllerNode.py" name="controller_node" output="screen" required="true"/>
 
   <node pkg="waypoint_follower" type="robotNode.py" name="robot_node" output="screen"/>
-
-
+  
 </launch>
