@@ -2,8 +2,7 @@
 
 import os
 import rospy
-from geometry_msgs.msg import Pose2D, Twist
-from std_msgs.msg import Header
+from geometry_msgs.msg import Quaternion, Twist
 
 #initialize global variables
 lastTime = None
@@ -17,7 +16,7 @@ rospy.init_node('robotNode',anonymous=True)
 print("initialized robot_node")
 
 #create the publisher for /pose topic:
-posePub = rospy.Publisher('/pose', Pose2D,queue_size=10)
+posePub = rospy.Publisher('/pose', Quaternion,latch=True,queue_size=10)
 print("initialized robot_node publisher")
 
 def robotPoseCallback(twistMsg):
@@ -29,17 +28,21 @@ def robotPoseCallback(twistMsg):
     #calculate time elapsed from last 
     global lastTime
     currentTime = rospy.Time.now()
+    print(lastTime)
     if lastTime is not None:
         dt = (currentTime-lastTime).to_sec()
 
         #use received twist message to update position values:
         pose_msg.x += twistMsg.linear.x*dt
         pose_msg.y += twistMsg.linear.y*dt
-        pose_msg.theta += twistMsg.angular.z*dt
+        pose_msg.z = 0.0
+        pose_msg.w += twistMsg.angular.z*dt
 
         #publish the updated pose
         posePub.publish(pose_msg)
         print("published pose")
+    else:
+        posePub.publish(pose_msg)
     #update lastTime for next loop:
     lastTime = currentTime
     
@@ -47,24 +50,29 @@ def main():
     global posePub
     global pose_msg
     print("executing robot_node main method")
-    
-    if pose_msg is None: #if first time executing
-        #give initial pose values:
-        pose_msg = Pose2D()
-        pose_msg.x = 0.0
-        pose_msg.y = 0.0
-        pose_msg.theta = 0.0
+    rate=rospy.Rate(10)
+    while not rospy.is_shutdown():
         print(pose_msg)
-        posePub.publish(pose_msg)
-        print("published initial pose")
+        if pose_msg is None: #if first time executing
+            #give initial pose values:
+            pose_msg = Quaternion(x=0.0, y=0.0, z=0.0, w=0.0)
+            # pose_msg.x = 0.0
+            # pose_msg.y = 0.0
+            # pose_msg.z = 0.0
+            # pose_msg.w = 0.0
+            print(pose_msg)
+            posePub.publish(Quaternion(x=0.0, y=0.0, z=0.0, w=0.0))
+            print("published initial pose")
 
-    else:
-        #create a subscriber to receive /cmd_vel topic messages:
-        rospy.Subscriber('/cmd_vel',Twist,robotPoseCallback)
+        else:
+            #create a subscriber to receive /cmd_vel topic messages:
+            rospy.Subscriber('/cmd_vel',Twist,robotPoseCallback)
+        rate.sleep()
     
     #keep the node going:
-    rospy.spin()
+    # rospy.spin()
 if __name__ == '__main__':
-    main()
-#    except rospy.ROSInterruptException:
-#       pass
+    try:
+        main()
+    except rospy.ROSInterruptException:
+      pass

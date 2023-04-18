@@ -3,7 +3,7 @@
 import os
 import numpy as np
 import rospy
-from geometry_msgs.msg import Pose2D, Twist
+from geometry_msgs.msg import Quaternion, Twist
 
 #specify ros master
 os.environ['ROS_MASTER_URI'] = 'http://192.168.1.33:11311'
@@ -13,7 +13,7 @@ rospy.init_node('controllerNode',anonymous=True)
 print("initialized controller node")
 
 #create the publisher for /cmd_vel topic:
-twistPub = rospy.Publisher('/cmd_vel', Twist,queue_size=10)
+twistPub = rospy.Publisher('/cmd_vel', Twist,latch=True,queue_size=10)
 print("created /cmd_vel publisher")
 
 #create global variables:
@@ -44,12 +44,12 @@ def cmd_velControllerCallback(poseMsg):
     #use received pose message to update position values:
     dx = waypoints[goal,0]-poseMsg.x
     dy = waypoints[goal,1]-poseMsg.y
-    print("pose is: "+str(poseMsg.x) + " " + str(poseMsg.y)+" "+str(poseMsg.theta))
+    print("pose is: "+str(poseMsg.x) + " " + str(poseMsg.y)+" "+str(poseMsg.w))
     print("dx and dy: "+str(dx)+" "+str(dy))
     
     #calculate position and heading error
     rho = np.sqrt(dx**2+dy**2)
-    alpha = -poseMsg.theta+np.arctan2(dy,dx)
+    alpha = -poseMsg.w+np.arctan2(dy,dx)
 
     #determine control goal and state:
     if rho < 0.1: #if close enough to current waypoint, start going next waypoint
@@ -66,8 +66,8 @@ def cmd_velControllerCallback(poseMsg):
         w = ka*alpha #min(ka*alpha,wmax)*np.sign(ka*apha)
 
     twist_msg = Twist()
-    twist_msg.linear.x = v*np.cos(poseMsg.theta)
-    twist_msg.linear.y = v*np.sin(poseMsg.theta)
+    twist_msg.linear.x = v*np.cos(poseMsg.w)
+    twist_msg.linear.y = v*np.sin(poseMsg.w)
     twist_msg.linear.z = 0.0
     twist_msg.angular.x = 0.0
     twist_msg.angular.y = 0.0
@@ -83,7 +83,7 @@ def main():
 
     print("creating /pose subscriber")
     #create a subscriber to receive /pose topic messages:
-    rospy.Subscriber('/pose',Pose2D,cmd_velControllerCallback)
+    rospy.Subscriber('/pose',Quaternion,cmd_velControllerCallback)
 
     #keep the node going:
     rospy.spin()
