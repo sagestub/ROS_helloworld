@@ -3,6 +3,7 @@
 import os
 import rospy
 from visualization_msgs.msg import Marker
+from geometry_msgs.msg import Quaternion
 
 #initialize global variables
 
@@ -20,7 +21,7 @@ markerPub = rospy.Publisher('/marker', Marker,queue_size=10)
 def markerCallback(poseMsg):
     
     #update the marker position
-    marker_msg = Marker()
+    marker = Marker()
     marker.header.frame_id = "map"
     marker.type = Marker.ARROW
     marker.action = Marker.ADD
@@ -38,7 +39,7 @@ def markerCallback(poseMsg):
     marker.color.g = 1.0
     marker.color.b = 0.0
 
-    markerPub.publish(marker_msg)
+    markerPub.publish(marker)
     
 def main():
     
