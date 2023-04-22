@@ -2,6 +2,7 @@
 
 import os
 import rospy
+import numpy as np
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import Quaternion
 
@@ -28,9 +29,17 @@ def markerCallback(poseMsg):
     marker.pose.position.x = poseMsg.x
     marker.pose.position.y = poseMsg.y
     marker.pose.position.z = poseMsg.z
-    marker.pose.orientation.x = 0.0
-    marker.pose.orientation.y = 0.0
-    marker.pose.orientation.z = poseMsg.w
+
+    #get pose orientation
+    x = 0.0
+    y = 0.0
+    z = 1.0 #axis of rotation
+    theta = poseMsg.w #angle of rotation
+    #q = [cos(theta/2), sin(theta/2) * (axis_x, axis_y, axis_z)] is the formula to create a quaternion
+    marker.pose.orientation.w = np.cosine(theta/2)
+    marker.pose.orientation.x = np.sin(theta/2)*x
+    marker.pose.orientation.y = np.sin(theta/2)*y
+    marker.pose.orientation.z = np.sin(theta/2)*z
 
     marker.scale.x = 1.0
     marker.scale.y = 0.1
