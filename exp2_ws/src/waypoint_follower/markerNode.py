@@ -54,6 +54,7 @@ def markerCallback(poseMsg):
 
 def pathCallback(Path):
     print('received Path')
+    print(Path.poses)
     pass
     
 def main():

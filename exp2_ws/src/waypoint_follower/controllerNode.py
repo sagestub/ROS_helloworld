@@ -3,7 +3,7 @@
 import os
 import numpy as np
 import rospy
-from geometry_msgs.msg import Pose2D, Twist, PointStamped
+from geometry_msgs.msg import Pose2D, Twist, PoseStamped
 from nav_msgs.msg import Path
 
 #specify ros master
@@ -39,15 +39,17 @@ waypoints = np.array([[4.63202999999382,-2.80608000000182],[4.22687999999141,-0.
 path_msg = Path()
 path_msg.header.frame_id = 'map'
 
-for waypoint in waypoints: 
-    point_msg = PointStamped()
-    point_msg.header.frame_id = 'map'
-    point_msg.point.x = waypoint[0]
-    point_msg.point.y = waypoint[1]
-    point_msg.point.z = 0.0
-    path_msg.poses.append(point_msg)
+# for waypoint in waypoints: 
+#     waypoint_msg = PoseStamped()
+#     waypoint_msg.header.frame_id = 'map'
+#     waypoint_msg.pose.position.x = waypoint[0]
+#     waypoint_msg.pose.position.y = waypoint[1]
+#     waypoint_msg.pose.position.z = 0.0
+#     waypoint_msg.pose.orientation.w = 1
 
-pathPub.publish(path_msg)
+#     path_msg.poses.append(waypoint_msg)
+
+# pathPub.publish(path_msg)
 
 def cmd_velControllerCallback(poseMsg):
     # print("controllerNode: callback updating /cmd_vel")
@@ -60,10 +62,8 @@ def cmd_velControllerCallback(poseMsg):
     ka = 3
     vmax = 1.5
     #use received pose message to update position values:
-    goal_x = waypoints[goal,0]
-    goal_y = waypoints[goal,1]
-    dx = goal_x-poseMsg.x
-    dy = goal_y-poseMsg.y
+    dx = waypoints[goal,0]-poseMsg.x
+    dy = waypoints[goal,1]-poseMsg.y
     
     #calculate position and heading error
     rho = np.sqrt(dx**2+dy**2)
@@ -71,11 +71,19 @@ def cmd_velControllerCallback(poseMsg):
 
     #determine control goal and state:
     if rho < 0.1: #if close enough to current waypoint, start going next waypoint
-        if goal == len(waypoints)/2:
+        if goal == len(waypoints)-1:
             goal =0 #start over
         else:
             goal += 1
-        print('Goal: {0}, {1}'.format(goal_x,goal_y))
+        waypoint_msg = PoseStamped()
+        waypoint_msg.header.frame_id = 'map'
+        waypoint_msg.pose.position.x = waypoints[goal,0]
+        waypoint_msg.pose.position.y = waypoints[goal,1]
+        waypoint_msg.pose.position.z = 0.0
+        waypoint_msg.pose.orientation.w = 1
+        path_msg.poses.append(waypoint_msg)
+        pathPub.publish(path_msg)
+        print('Goal: {0}, {1}'.format(waypoints[goal,0],waypoints[goal,1]))
 
     if np.abs(alpha)> np.pi/12: #if robot not aimed towards waypoint
         v = 0 #linear speed = 0
