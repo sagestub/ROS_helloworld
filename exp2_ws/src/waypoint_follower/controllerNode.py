@@ -3,7 +3,8 @@
 import os
 import numpy as np
 import rospy
-from geometry_msgs.msg import Quaternion, Twist
+from geometry_msgs.msg import Pose2D, Twist, PointStamped
+from nav_msgs.msg import Path
 
 #specify ros master
 os.environ['ROS_MASTER_URI'] = 'http://192.168.1.33:11311'
@@ -16,10 +17,13 @@ print("controllerNode: Initialized")
 twistPub = rospy.Publisher('/cmd_vel', Twist,queue_size=10)
 print("controllerNode: created /cmd_vel publisher")
 
+#create the publisher for /path topic:
+pathPub = rospy.Publisher('/path', Path,queue_size = 24)
+
 #create global variables:
 cmd_vel = None
-goal = 1
-waypoints = np.array([[0,0],[4.63202999999382,-2.80608000000182],[4.22687999999141,-0.530580000001208],\
+goal = 0
+waypoints = np.array([[4.63202999999382,-2.80608000000182],[4.22687999999141,-0.530580000001208],\
         [6.53789999999304,0.983460000001415],[7.07402999999601,1.89032999999903],\
         [8.01420000000419,2.35320000000161],[8.37162000000092,3.39437999999927],\
         [9.32399999999404,3.88832999999831],[11.0511600000028,3.37329000000125],\
@@ -31,9 +35,24 @@ waypoints = np.array([[0,0],[4.63202999999382,-2.80608000000182],[4.226879999991
         [3.87056999999189,1.23098999999954],[2.0834699999925,1.34421000000156],\
         [0.451769999995122,3.11577000000074],[-2.67954000000188,1.97247000000065],[0,0]])
 
+#publish goal pose
+path_msg = Path()
+path_msg.header.frame_id = 'map'
+
+for waypoint in waypoints: 
+    point_msg = PointStamped()
+    point_msg.header.frame_id = 'map'
+    point_msg.point.x = waypoint[0]
+    point_msg.point.y = waypoint[1]
+    point_msg.point.z = 0.0
+    path_msg.poses.append(point_msg)
+
+pathPub.publish(path_msg)
+
 def cmd_velControllerCallback(poseMsg):
-    print("controllerNode: callback updating /cmd_vel")
+    # print("controllerNode: callback updating /cmd_vel")
     global twistPub
+    global pathPub
     global cmd_vel
     global goal
     global waypoints
@@ -41,21 +60,22 @@ def cmd_velControllerCallback(poseMsg):
     ka = 3
     vmax = 1.5
     #use received pose message to update position values:
-    dx = waypoints[goal,0]-poseMsg.x
-    dy = waypoints[goal,1]-poseMsg.y
-    # print("pose is: "+str(poseMsg.x) + " " + str(poseMsg.y)+" "+str(poseMsg.w))
-    # print("dx and dy: "+str(dx)+" "+str(dy))
+    goal_x = waypoints[goal,0]
+    goal_y = waypoints[goal,1]
+    dx = goal_x-poseMsg.x
+    dy = goal_y-poseMsg.y
     
     #calculate position and heading error
     rho = np.sqrt(dx**2+dy**2)
-    alpha = -poseMsg.w+np.arctan2(dy,dx)
+    alpha = -poseMsg.theta+np.arctan2(dy,dx)
 
     #determine control goal and state:
     if rho < 0.1: #if close enough to current waypoint, start going next waypoint
         if goal == len(waypoints)/2:
-            goal =1 #start over
+            goal =0 #start over
         else:
             goal += 1
+        print('Goal: {0}, {1}'.format(goal_x,goal_y))
 
     if np.abs(alpha)> np.pi/12: #if robot not aimed towards waypoint
         v = 0 #linear speed = 0
@@ -65,8 +85,8 @@ def cmd_velControllerCallback(poseMsg):
         w = ka*alpha #min(ka*alpha,wmax)*np.sign(ka*apha)
 
     twist_msg = Twist()
-    twist_msg.linear.x = v*np.cos(poseMsg.w)
-    twist_msg.linear.y = v*np.sin(poseMsg.w)
+    twist_msg.linear.x = v*np.cos(poseMsg.theta)
+    twist_msg.linear.y = v*np.sin(poseMsg.theta)
     twist_msg.linear.z = 0.0
     twist_msg.angular.x = 0.0
     twist_msg.angular.y = 0.0
@@ -74,16 +94,16 @@ def cmd_velControllerCallback(poseMsg):
 
     #publish the updated pose
     twistPub.publish(twist_msg)
-    print("controllerNode: published /cmd_vel")
+    # print("controllerNode: published /cmd_vel")
     
 def main():
     global twistPub
     global cmd_vel
 
     # while not rospy.is_shutdown():
-    print("controllerNode: creating /pose subscriber")
+    # print("controllerNode: creating /pose subscriber")
     #create a subscriber to receive /pose topic messages:
-    rospy.Subscriber('/pose',Quaternion,cmd_velControllerCallback)
+    rospy.Subscriber('/pose',Pose2D,cmd_velControllerCallback)
 
     #keep the node going:
     rospy.spin()
