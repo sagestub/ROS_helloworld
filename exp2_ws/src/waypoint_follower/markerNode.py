@@ -30,7 +30,7 @@ def markerCallback(poseMsg):
     marker.pose.position.z = poseMsg.z
     marker.pose.orientation.x = 0.0
     marker.pose.orientation.y = 0.0
-    marker.pose.orienation.z = poseMsg.w
+    marker.pose.orientation.z = poseMsg.w
 
     marker.scale.x = 1.0
     marker.scale.y = 0.1
