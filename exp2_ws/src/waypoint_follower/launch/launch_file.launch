@@ -1,7 +1,10 @@
 <launch>
 
+  <!-- Start rviz with the loaded configuration file -->
+  <node name="rviz" pkg="waypoint_follower" type="rviz" args="-d rviz_config.rviz"/>
+  
+  <!-- Start the Controller, Robot, and Marker Nodes-->
   <node pkg="waypoint_follower" type="controllerNode.py" name="controller_node" output="screen" required="true"/>
-
   <node pkg="waypoint_follower" type="robotNode.py" name="robot_node" output="screen"/>
   <node pkg="waypoint_follower" type="markerNode.py" name="marker_node" output="screen"/>
 </launch>
