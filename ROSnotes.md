@@ -52,3 +52,6 @@ Running ROS:
     - repeat for other nodes
 - run `rosrun rqt_graph rqt_graph` to visualize nodes
 - run `rostopic list` or `rosnode list` to visualize topics and nodes, respectively
+
+Running OpenCV:
+- refer to [OpenCV-Python Tutorials](https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html)
