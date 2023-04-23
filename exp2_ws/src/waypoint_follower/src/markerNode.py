@@ -4,7 +4,7 @@ import os
 import rospy
 import numpy as np
 from visualization_msgs.msg import Marker
-from geometry_msgs.msg import Quaternion,Pose2D
+from geometry_msgs.msg import Quaternion,Pose2D,Vector3,PoseStamped
 from nav_msgs.msg import Path
 
 #initialize global variables
@@ -52,9 +52,9 @@ def markerCallback(poseMsg):
 
     markerPub.publish(marker)
 
-def pathCallback(Path):
-    print('received Path')
-    print(Path.poses)
+def pathCallback(pathMsg):
+    # print('received Path')
+    # print(pathMsg.poses)
     pass
     
 def main():
