@@ -63,4 +63,24 @@ Running ROS:
 
 Running OpenCV:
 - refer to [OpenCV-Python Tutorials](https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html)
-- used [OpenCV-Basics Tutorial](https://github.com/nicknochnack/OpenCV-Basics) to help set up my image capture using openCV packages
+- used [OpenCV-Basics Tutorial](https://github.com/nicknochnack/OpenCV-Basics) to help set up my image capture using openCV packages see openCV_test.ipynb
+- more advanced camera methods are set up here in [joinAero's github gist](https://gist.github.com/joinAero/1f76844278f141cea8338d1118423648)
+
+Specific resources for Kinect (first gen):
+- [ROS wiki page for Kinect calibration](http://wiki.ros.org/kinect_calibration/technical)
+- look for the pykinect package and its libraries (?)
+
+PLAN: 
+- set up ROS network where: 
+    - camera data is collected by orangepi, published to /images topic in real time
+    - /images picked up by a ros node running on windows/matlab that can take that image data, perform the VO algorithm on it, and publish /pose messages
+    - /pose messages are then picked up and visiualized by the rviz node running on stanley-linux
+    - TODO: calibrate intrinsics for lifecam on openCV, write ROS nodes, modify experiment 3 code to get VO algorithm to work with incoming ROS data
+- perform offline VO:
+    - calibrate lifecam using openCV parameters and checkerboard
+    - get series of images from actual camera
+    - "publish" images on ROS and read them in on windows/matlab for algorithm to process
+    - output results back to ROS network and rviz?
+- adopt VO algorithm in Python:
+    - investigate if [this monocular visual odometry algorithm](https://github.com/niconielsen32/ComputerVision/blob/master/VisualOdometry/visual_odometry.py) would work
+    - if so, place it in ROS node and execute either of the two plans above, just without the windows/matlab running VO method
