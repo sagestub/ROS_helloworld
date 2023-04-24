@@ -63,3 +63,4 @@ Running ROS:
 
 Running OpenCV:
 - refer to [OpenCV-Python Tutorials](https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html)
+- used [OpenCV-Basics Tutorial](https://github.com/nicknochnack/OpenCV-Basics) to help set up my image capture using openCV packages
