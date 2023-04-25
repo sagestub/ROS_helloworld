@@ -1,7 +1,7 @@
 clc, clear all
 
 images = dir(fullfile(pwd,'images', '*.jpg'));
-plot_on = 0;
+plot_on = 1;
 focalLength    = [591.1707 592.5926];        % specified in units of pixels
 principalPoint = [316.807 228.4456];        % in pixels [x, y]
 imageSize      = [480 640]; % in pixels [mrows, ncols]
