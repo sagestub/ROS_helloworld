@@ -39,11 +39,11 @@ while cap.isOpened():
     frame = undst
 
     cv.imshow('Webcam', frame) #visualize values
-    if cv.waitKey(20) & 0xFF == ord('s'): 
-        cv.imwrite('{0}{1}.{2}'.format(filename,index,filetype), frame)
-        print("saved image to {0}{1}.{2}".format(filename,index,filetype))
+    if cv.waitKey(1) & 0xFF == ord('s'): 
+        cv.imwrite("{}{:02d}.{}".format(filename,index,filetype), frame)
+        print("saved image to {}{:02d}.{}".format(filename,index,filetype))
         index = index+1
-    if cv.waitKey(10) & 0xFF == ord('q'): 
+    if cv.waitKey(1) & 0xFF == ord('q'): 
         break
 cap.release()
 cv.destroyAllWindows()
