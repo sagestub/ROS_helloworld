@@ -1,0 +1,9 @@
+<launch>
+ 
+  <!-- Start rviz with the loaded configuration file -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find vo_network)/rviz/config.rviz"/>
+  
+  <!-- Start the Controller, Robot, and Marker Nodes-->
+  <node pkg="vo_network" type="cameraNode.py" name="camera_node" output="screen" required="true"/>
+  
+</launch>
