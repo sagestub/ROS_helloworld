@@ -45,13 +45,42 @@ Connecting nodes/ Network stuff:
 - connect to stanley-linux using `ssh sage@192.168.1.33`
 
 Running ROS:
+- The following steps have been aliased and invoked in my .bashrc to streamline ROS operations:
+    - run  `source ~/Documents/ROS_helloworld/exp2_ws/devel/setup.bash` to get all the ROS packages available from your workspace
+    - run `source ~/pyenvs/ROS544proj/bin/activate` to activate the python environment required
 - in a new terminal tab, run `roscore`
-- in a new terminal tab, run  `source ~/Documents/ROS_helloworld/exp2_ws/devel/setup.bash` to get all the ROS packages available from your workspace
-- in a new? terminal tab, run `source ~/pyenvs/ROS544proj/bin/activate` to activate the python environment required
-    - next, run `rosrun waypoint_follower robotNode.py` (rosrun package_name node_name)
-    - repeat for other nodes
-- run `rosrun rqt_graph rqt_graph` to visualize nodes
+- in a new terminal tab, run `roslaunch <package_name> launch_file.launch`
+    - This will invoke the xml-formatted .launch command that can initiate nodes, set up graphs, etc.
+
+- To activate nodes manually:
+    - run `rosrun waypoint_follower robotNode.py` (rosrun package_name node_name)
+- To publish individual messages:
+    - run `rostopic pub /pose geometry_msgs/Pose2D "x: 0.0 y: 0.0 theta: 0.0"` (rostopic pub /ros_topic message_type message)
+- run `rqt_graph` to visualize nodes
+- run `rviz` to visualize robot position, path, data, etc. Note that an rviz session can be saved as a config.rviz file and placed into a launch file for easy re-running
+- run `rqt_plot` to graph topic data
 - run `rostopic list` or `rosnode list` to visualize topics and nodes, respectively
 
 Running OpenCV:
 - refer to [OpenCV-Python Tutorials](https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html)
+- used [OpenCV-Basics Tutorial](https://github.com/nicknochnack/OpenCV-Basics) to help set up my image capture using openCV packages see openCV_test.ipynb
+- more advanced camera methods are set up here in [joinAero's github gist](https://gist.github.com/joinAero/1f76844278f141cea8338d1118423648)
+
+Specific resources for Kinect (first gen):
+- [ROS wiki page for Kinect calibration](http://wiki.ros.org/kinect_calibration/technical)
+- look for the pykinect package and its libraries (?)
+
+PLAN: 
+- set up ROS network where: 
+    - camera data is collected by orangepi, published to /images topic in real time
+    - /images picked up by a ros node running on windows/matlab that can take that image data, perform the VO algorithm on it, and publish /pose messages
+    - /pose messages are then picked up and visiualized by the rviz node running on stanley-linux
+    - TODO: calibrate intrinsics for lifecam on openCV, write ROS nodes, modify experiment 3 code to get VO algorithm to work with incoming ROS data
+- perform offline VO:
+    - calibrate lifecam using openCV parameters and checkerboard
+    - get series of images from actual camera
+    - "publish" images on ROS and read them in on windows/matlab for algorithm to process
+    - output results back to ROS network and rviz?
+- adopt VO algorithm in Python:
+    - investigate if [this monocular visual odometry algorithm](https://github.com/niconielsen32/ComputerVision/blob/master/VisualOdometry/visual_odometry.py) would work
+    - if so, place it in ROS node and execute either of the two plans above, just without the windows/matlab running VO method
