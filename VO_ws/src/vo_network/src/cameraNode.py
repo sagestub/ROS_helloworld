@@ -28,7 +28,7 @@ def publishImages():
     rate = rospy.Rate(5) #5hz
     cap = cv.VideoCapture(2)
     cap.set(cv.CAP_PROP_AUTOFOCUS, 0)
-    mtx, dist = load_intrinsics("~/Documents/ROS_helloworld/VO_ws/")
+    mtx, dist = load_intrinsics("/home/sage/Documents/ROS_helloworld/VO_ws/")
     while not rospy.is_shutdown() & cap.isOpened():
         
         ret, frame = cap.read()
