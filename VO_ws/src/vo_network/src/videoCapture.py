@@ -73,7 +73,7 @@ while cap.isOpened():
     undst = undst[y:y+h, x:x+w]
     frame = undst
 
-    cv.imwrite("{}{:02d}.{}".format(filename,frame_count,filetype), frame)
+    cv.imwrite("{}{:05d}.{}".format(filename,frame_count,filetype), frame)
     frame_count += 1
 cap.release()
 cv.destroyAllWindows()
