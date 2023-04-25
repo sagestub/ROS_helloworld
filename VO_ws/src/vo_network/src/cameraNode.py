@@ -25,7 +25,7 @@ def publishImages():
     imgPub = rospy.Publisher('/img', Image,queue_size=10)
     print("cameraNode: created /img publisher")
 
-    rate = rospy.Rate(5) #5hz
+    rate = rospy.Rate(10) #5hz
     cap = cv.VideoCapture(2)
     cap.set(cv.CAP_PROP_AUTOFOCUS, 0)
     mtx, dist = load_intrinsics("/home/sage/Documents/ROS_helloworld/VO_ws/")
