@@ -1,7 +1,7 @@
 clc, clear all
 
 images = dir(fullfile(pwd,'images', '*.jpg'));
-plot_on = 1;
+plot_on = 0;
 focalLength    = [591.1707 592.5926];        % specified in units of pixels
 principalPoint = [316.807 228.4456];        % in pixels [x, y]
 imageSize      = [480 640]; % in pixels [mrows, ncols]
@@ -11,12 +11,12 @@ intrinsics = cameraIntrinsics(focalLength, principalPoint, imageSize);
 % rosmsg_handles.posePubmsg = rosmessage(rosmsg_handles.posePub);
 
 %loop through images
-for i = 10:numel(images)
+for i = 1:numel(images)
     file_name = images(i).name
     file_path = fullfile(pwd,'images',file_name);
     img = rgb2gray(imread(file_path));
 
-    if i==10
+    if i==1
 %         rosmsg_handles.posePubmsg.Position.X = 0.0;
 %         rosmsg_handles.posePubmsg.Position.Y = 0.0;
 %         rosmsg_handles.posePubmsg.Position.Z = 0.0;
@@ -46,13 +46,13 @@ for i = 10:numel(images)
         currPoints = VO_detect_points(img);
         currFeatures = VO_extract_features(img, currPoints);
         if plot_on
-            subplot(2,2,1)
+            subplot(2,2,2)
             imshow(img)
-            title('Detected points in first view')
+            title('Detected points in second view')
             hold on
         
             % plot detected points in first view
-            plot(prevPoints.Location(:,1),prevPoints.Location(:,2),'ys'); %detected points
+            plot(currPoints.Location(:,1),currPoints.Location(:,2),'ys'); %detected points
             drawnow
         end
 
@@ -81,8 +81,12 @@ for i = 10:numel(images)
         end
 
         % Estimate the pose of the current view relative to the previous view.
-        [orient, loc, inlierIdx] = helperEstimateRelativePose(...
+        try 
+            [orient, loc, inlierIdx] = helperEstimateRelativePose(...
             matchedPoints1, matchedPoints2, intrinsics);
+        catch
+            continue
+        end
             
         % Exclude epipolar outliers.
         indexPairs = indexPairs(inlierIdx, :);
@@ -100,6 +104,7 @@ for i = 10:numel(images)
         inliers = numel(inlierIdx);
         orient
         loc
+        prevImg = img;
     end
 
 end
