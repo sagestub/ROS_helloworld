@@ -1,0 +1,8 @@
+prefix=/home/sage/Documents/ROS_helloworld/VO_ws/install
+
+Name: vo_network
+Description: Description of vo_network
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
