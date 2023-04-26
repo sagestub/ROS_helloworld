@@ -71,7 +71,15 @@ Running ROS:
 - To activate nodes manually:
     - run `rosrun waypoint_follower robotNode.py` (rosrun package_name node_name)
 - To publish individual messages:
-    - run `rostopic pub /pose geometry_msgs/Pose2D "x: 0.0 y: 0.0 theta: 0.0"` (rostopic pub /ros_topic message_type message)
+    - run 
+    
+      ```
+      rostopic pub /pose geometry_msgs/Pose2D "x: 1.0
+      y: 2.0
+      theta: 0.5"
+      ```
+
+     (rostopic pub /ros_topic message_type message)
 - run `rqt_graph` to visualize nodes
 - run `rviz` to visualize robot position, path, data, etc. Note that an rviz session can be saved as a config.rviz file and placed into a launch file for easy re-running
 - run `rqt_plot` to graph topic data
