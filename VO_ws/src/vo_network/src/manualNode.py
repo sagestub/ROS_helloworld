@@ -28,7 +28,7 @@ def publishImages():
     print("imageNode: created /img publisher")
 
     rate = rospy.Rate(10) #5hz
-    files = sorted(glob.glob("/home/sage/Documents/ROS_helloworld/VO_ws/images/*.jpg"))
+    files = sorted(glob.glob("./VO_ws/images/*.jpg"))
     index = 0
     max = len(files)
     while index<max and not rospy.is_shutdown():
