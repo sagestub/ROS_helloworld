@@ -3,6 +3,8 @@
 *.bak
 *.swp
 *.pyc
+VO_ws/devel/*
+VO_ws/build/*
 devel/
 build/
 CMakeLists.txt.user
