@@ -9,6 +9,13 @@ from cv_bridge import CvBridge
 
 #specify ros master
 os.environ['ROS_MASTER_URI'] = 'http://192.168.1.33:11311'
+user = os.environ['USER']
+if user == "sage":
+    usb_chan = 2
+if user == "orangepi":
+    usb_chan = 1
+else:
+    usb_chan = 2 #guess at default value?
 
 #how to load camera intrinsics from a file:
 def load_intrinsics(dir,fileheader="lifecam"):
@@ -26,7 +33,7 @@ def publishImages():
     print("cameraNode: created /img publisher")
 
     rate = rospy.Rate(10) #5hz
-    cap = cv.VideoCapture(2)
+    cap = cv.VideoCapture(usb_chan)
     cap.set(cv.CAP_PROP_AUTOFOCUS, 0)
     mtx, dist = load_intrinsics("./VO_ws/")
     while not rospy.is_shutdown() & cap.isOpened():
