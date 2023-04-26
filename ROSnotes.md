@@ -51,6 +51,10 @@ Running ROS:
 - in a new terminal tab, run `roscore`
 - in a new terminal tab, run `roslaunch <package_name> launch_file.launch`
     - This will invoke the xml-formatted .launch command that can initiate nodes, set up graphs, etc.
+- if you desire to have ROS run in a virtual environment:
+    - enter the following in the shebang: `#! /usr/bin/env python3`
+        - this will invoke the first instance of python3 in your $PATH
+    - in your .bashrc, specify your virtual environment as the first python in the list by running `export PATH=/home/user_name/path_to_virtualenv/venv_name/bin/python3:$PATH` 
 
 - To activate nodes manually:
     - run `rosrun waypoint_follower robotNode.py` (rosrun package_name node_name)

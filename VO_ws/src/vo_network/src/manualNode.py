@@ -1,4 +1,5 @@
-#!/usr/bin/env $PYENV_ROS544PROJ
+#! /usr/bin/env python3
+
 
 import os
 import glob
@@ -30,9 +31,8 @@ def publishImages():
     files = sorted(glob.glob("/home/sage/Documents/ROS_helloworld/VO_ws/images/*.jpg"))
     index = 0
     max = len(files)
-    while not rospy.is_shutdown() & cap.isOpened() & index<max:
-        cap = cv.imread(files[index])
-        ret, frame = cap.read()
+    while index<max and not rospy.is_shutdown():
+        frame = cv.imread(files[index])
         h, w = frame.shape[:2]
         bridge = CvBridge()
         img_msg = Image()
@@ -44,11 +44,9 @@ def publishImages():
         img_msg.step = w*3
         img_msg.data = bridge.cv2_to_imgmsg(frame,"bgr8").data
         imgPub.publish(img_msg)
+        index += 1
         rate.sleep()
         
-
-    # Releases the webcam
-    cap.release()
     # Closes the frame
     cv.destroyAllWindows()
 
