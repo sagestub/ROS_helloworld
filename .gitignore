@@ -1,3 +1,9 @@
 *.asv
+*.log
+*.bak
+*.swp
+*.pyc
 devel/
 build/
+CMakeLists.txt.user
+__pycache__/
