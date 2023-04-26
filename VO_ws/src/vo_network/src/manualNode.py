@@ -27,7 +27,7 @@ def publishImages():
     imgPub = rospy.Publisher('/img', Image,queue_size=10)
     print("imageNode: created /img publisher")
 
-    rate = rospy.Rate(10) #5hz
+    rate = rospy.Rate(1) #1hz
     files = sorted(glob.glob("./VO_ws/images/*.jpg"))
     index = 0
     max = len(files)
