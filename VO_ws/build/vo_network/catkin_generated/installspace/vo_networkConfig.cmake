@@ -67,14 +67,14 @@ set(vo_network_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(vo_network_SOURCE_PREFIX /home/sage/Documents/ROS_helloworld/VO_ws/src/vo_network)
-  set(vo_network_DEVEL_PREFIX /home/sage/Documents/ROS_helloworld/VO_ws/devel)
+  set(vo_network_SOURCE_PREFIX /home/orangepi/ROS_helloworld/VO_ws/src/vo_network)
+  set(vo_network_DEVEL_PREFIX /home/orangepi/ROS_helloworld/VO_ws/devel)
   set(vo_network_INSTALL_PREFIX "")
   set(vo_network_PREFIX ${vo_network_DEVEL_PREFIX})
 else()
   set(vo_network_SOURCE_PREFIX "")
   set(vo_network_DEVEL_PREFIX "")
-  set(vo_network_INSTALL_PREFIX /home/sage/Documents/ROS_helloworld/VO_ws/install)
+  set(vo_network_INSTALL_PREFIX /home/orangepi/ROS_helloworld/VO_ws/install)
   set(vo_network_PREFIX ${vo_network_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/sage/Documents/ROS_helloworld/VO_ws/install/lib;/home/sage/Documents/ROS_helloworld/exp2_ws/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/orangepi/ROS_helloworld/VO_ws/install/lib;/home/orangepi/ROS_helloworld/exp2_ws/devel/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

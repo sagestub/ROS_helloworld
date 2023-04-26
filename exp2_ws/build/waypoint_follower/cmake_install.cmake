@@ -1,8 +1,8 @@
-# Install script for directory: /home/sage/Documents/ROS_helloworld/exp2_ws/src/waypoint_follower
+# Install script for directory: /home/orangepi/ROS_helloworld/exp2_ws/src/waypoint_follower
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/sage/Documents/ROS_helloworld/exp2_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/orangepi/ROS_helloworld/exp2_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,17 +38,17 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/sage/Documents/ROS_helloworld/exp2_ws/build/waypoint_follower/catkin_generated/installspace/waypoint_follower.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/orangepi/ROS_helloworld/exp2_ws/build/waypoint_follower/catkin_generated/installspace/waypoint_follower.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/waypoint_follower/cmake" TYPE FILE FILES
-    "/home/sage/Documents/ROS_helloworld/exp2_ws/build/waypoint_follower/catkin_generated/installspace/waypoint_followerConfig.cmake"
-    "/home/sage/Documents/ROS_helloworld/exp2_ws/build/waypoint_follower/catkin_generated/installspace/waypoint_followerConfig-version.cmake"
+    "/home/orangepi/ROS_helloworld/exp2_ws/build/waypoint_follower/catkin_generated/installspace/waypoint_followerConfig.cmake"
+    "/home/orangepi/ROS_helloworld/exp2_ws/build/waypoint_follower/catkin_generated/installspace/waypoint_followerConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/waypoint_follower" TYPE FILE FILES "/home/sage/Documents/ROS_helloworld/exp2_ws/src/waypoint_follower/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/waypoint_follower" TYPE FILE FILES "/home/orangepi/ROS_helloworld/exp2_ws/src/waypoint_follower/package.xml")
 endif()
 

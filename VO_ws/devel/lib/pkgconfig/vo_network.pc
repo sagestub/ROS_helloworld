@@ -1,4 +1,4 @@
-prefix=/home/sage/Documents/ROS_helloworld/VO_ws/devel
+prefix=/home/orangepi/ROS_helloworld/VO_ws/devel
 
 Name: vo_network
 Description: Description of vo_network

@@ -1,2 +1,2 @@
 - setup-file:
-    local-name: /home/sage/Documents/ROS_helloworld/VO_ws/devel/setup.sh
+    local-name: /home/orangepi/ROS_helloworld/VO_ws/devel/setup.sh

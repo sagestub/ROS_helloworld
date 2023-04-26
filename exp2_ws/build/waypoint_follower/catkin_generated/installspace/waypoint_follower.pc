@@ -1,4 +1,4 @@
-prefix=/home/sage/Documents/ROS_helloworld/exp2_ws/install
+prefix=/home/orangepi/ROS_helloworld/exp2_ws/install
 
 Name: waypoint_follower
 Description: Description of waypoint_follower

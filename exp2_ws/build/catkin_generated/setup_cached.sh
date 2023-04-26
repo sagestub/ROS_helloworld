@@ -7,10 +7,8 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/sage/Documents/ROS_helloworld/exp2_ws/devel:$CMAKE_PREFIX_PATH"
-export LD_LIBRARY_PATH="/home/sage/Documents/ROS_helloworld/exp2_ws/devel/lib:$LD_LIBRARY_PATH"
-export PATH='/opt/ros/noetic/bin:/home/sage/Documents/ROS_helloworld/ROS544proj/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'
-export PKG_CONFIG_PATH="/home/sage/Documents/ROS_helloworld/exp2_ws/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
-export PWD='/home/sage/Documents/ROS_helloworld/exp2_ws/build'
-export ROSLISP_PACKAGE_DIRECTORIES='/home/sage/Documents/ROS_helloworld/exp2_ws/devel/share/common-lisp'
-export ROS_PACKAGE_PATH="/home/sage/Documents/ROS_helloworld/exp2_ws/src:$ROS_PACKAGE_PATH"
+export LD_LIBRARY_PATH='/opt/ros/noetic/lib'
+export PATH='/opt/ros/noetic/bin:/home/orangepi/ROS544proj/pyenvs/ROS544proj/bin/python3:/home/orangepi/ROS544proj/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'
+export PKG_CONFIG_PATH='/opt/ros/noetic/lib/pkgconfig'
+export PWD='/home/orangepi/ROS_helloworld/exp2_ws/build'
+export ROS_PACKAGE_PATH='/home/orangepi/ROS_helloworld/exp2_ws/src:/opt/ros/noetic/share'

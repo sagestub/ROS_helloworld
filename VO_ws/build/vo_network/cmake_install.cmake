@@ -1,8 +1,8 @@
-# Install script for directory: /home/sage/Documents/ROS_helloworld/VO_ws/src/vo_network
+# Install script for directory: /home/orangepi/ROS_helloworld/VO_ws/src/vo_network
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/sage/Documents/ROS_helloworld/VO_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/orangepi/ROS_helloworld/VO_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,17 +38,17 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/sage/Documents/ROS_helloworld/VO_ws/build/vo_network/catkin_generated/installspace/vo_network.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/orangepi/ROS_helloworld/VO_ws/build/vo_network/catkin_generated/installspace/vo_network.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/vo_network/cmake" TYPE FILE FILES
-    "/home/sage/Documents/ROS_helloworld/VO_ws/build/vo_network/catkin_generated/installspace/vo_networkConfig.cmake"
-    "/home/sage/Documents/ROS_helloworld/VO_ws/build/vo_network/catkin_generated/installspace/vo_networkConfig-version.cmake"
+    "/home/orangepi/ROS_helloworld/VO_ws/build/vo_network/catkin_generated/installspace/vo_networkConfig.cmake"
+    "/home/orangepi/ROS_helloworld/VO_ws/build/vo_network/catkin_generated/installspace/vo_networkConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/vo_network" TYPE FILE FILES "/home/sage/Documents/ROS_helloworld/VO_ws/src/vo_network/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/vo_network" TYPE FILE FILES "/home/orangepi/ROS_helloworld/VO_ws/src/vo_network/package.xml")
 endif()
 

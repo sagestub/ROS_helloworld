@@ -67,14 +67,14 @@ set(waypoint_follower_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(waypoint_follower_SOURCE_PREFIX /home/sage/Documents/ROS_helloworld/exp2_ws/src/waypoint_follower)
-  set(waypoint_follower_DEVEL_PREFIX /home/sage/Documents/ROS_helloworld/exp2_ws/devel)
+  set(waypoint_follower_SOURCE_PREFIX /home/orangepi/ROS_helloworld/exp2_ws/src/waypoint_follower)
+  set(waypoint_follower_DEVEL_PREFIX /home/orangepi/ROS_helloworld/exp2_ws/devel)
   set(waypoint_follower_INSTALL_PREFIX "")
   set(waypoint_follower_PREFIX ${waypoint_follower_DEVEL_PREFIX})
 else()
   set(waypoint_follower_SOURCE_PREFIX "")
   set(waypoint_follower_DEVEL_PREFIX "")
-  set(waypoint_follower_INSTALL_PREFIX /home/sage/Documents/ROS_helloworld/exp2_ws/install)
+  set(waypoint_follower_INSTALL_PREFIX /home/orangepi/ROS_helloworld/exp2_ws/install)
   set(waypoint_follower_PREFIX ${waypoint_follower_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/sage/Documents/ROS_helloworld/exp2_ws/install/lib;/opt/ros/noetic/lib)
+    foreach(path /home/orangepi/ROS_helloworld/exp2_ws/install/lib;/home/orangepi/ROS_helloworld/exp2_ws/devel/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

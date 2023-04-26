@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sage/Documents/ROS_helloworld/exp2_ws/src
+CMAKE_SOURCE_DIR = /home/orangepi/ROS_helloworld/exp2_ws/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sage/Documents/ROS_helloworld/exp2_ws/build
+CMAKE_BINARY_DIR = /home/orangepi/ROS_helloworld/exp2_ws/build
 
 # Utility rule file for _catkin_empty_exported_target.
 
@@ -63,10 +63,10 @@ waypoint_follower/CMakeFiles/_catkin_empty_exported_target.dir/build: _catkin_em
 .PHONY : waypoint_follower/CMakeFiles/_catkin_empty_exported_target.dir/build
 
 waypoint_follower/CMakeFiles/_catkin_empty_exported_target.dir/clean:
-	cd /home/sage/Documents/ROS_helloworld/exp2_ws/build/waypoint_follower && $(CMAKE_COMMAND) -P CMakeFiles/_catkin_empty_exported_target.dir/cmake_clean.cmake
+	cd /home/orangepi/ROS_helloworld/exp2_ws/build/waypoint_follower && $(CMAKE_COMMAND) -P CMakeFiles/_catkin_empty_exported_target.dir/cmake_clean.cmake
 .PHONY : waypoint_follower/CMakeFiles/_catkin_empty_exported_target.dir/clean
 
 waypoint_follower/CMakeFiles/_catkin_empty_exported_target.dir/depend:
-	cd /home/sage/Documents/ROS_helloworld/exp2_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sage/Documents/ROS_helloworld/exp2_ws/src /home/sage/Documents/ROS_helloworld/exp2_ws/src/waypoint_follower /home/sage/Documents/ROS_helloworld/exp2_ws/build /home/sage/Documents/ROS_helloworld/exp2_ws/build/waypoint_follower /home/sage/Documents/ROS_helloworld/exp2_ws/build/waypoint_follower/CMakeFiles/_catkin_empty_exported_target.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/orangepi/ROS_helloworld/exp2_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/orangepi/ROS_helloworld/exp2_ws/src /home/orangepi/ROS_helloworld/exp2_ws/src/waypoint_follower /home/orangepi/ROS_helloworld/exp2_ws/build /home/orangepi/ROS_helloworld/exp2_ws/build/waypoint_follower /home/orangepi/ROS_helloworld/exp2_ws/build/waypoint_follower/CMakeFiles/_catkin_empty_exported_target.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : waypoint_follower/CMakeFiles/_catkin_empty_exported_target.dir/depend
 
