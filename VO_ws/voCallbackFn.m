@@ -6,6 +6,7 @@ function voCallbackFn(~,imgMsg)
     img = rgb2gray(readImage(imgMsg));
     global rosmsg_handles
     persistent prevImg
+    plot_on = 0;
     dt = 1/5; %images are sent at a rate of 5Hz
     focalLength    = [591.1707 592.5926];        % specified in units of pixels
     principalPoint = [316.807 228.4456];        % in pixels [x, y]
@@ -47,12 +48,30 @@ function voCallbackFn(~,imgMsg)
         % Detect previous image points and features
         prevPoints = VO_detect_points(prevImg);
         prevFeatures = VO_extract_features(prevImg, prevPoints);
-
+        if plot_on
+            subplot(2,2,1)
+            imshow(prevImg)
+            title('Detected points in first view')
+            hold on
+        
+            % plot detected points in first view
+            plot(prevPoints.Location(:,1),prevPoints.Location(:,2),'ys'); %detected points
+            drawnow
+        end
 
         % Detect current image points and features
         currPoints = VO_detect_points(img);
         currFeatures = VO_extract_features(img, currPoints);
+        if plot_on
+            subplot(2,2,2)
+            imshow(img)
+            title('Detected points in second view')
+            hold on
         
+            % plot detected points in first view
+            plot(currPoints.Location(:,1),currPoints.Location(:,2),'ys'); %detected points
+            drawnow
+        end
 
         %Extract pose from second view by matching features between the 
         %   previous and current image.
@@ -62,14 +81,33 @@ function voCallbackFn(~,imgMsg)
         
         matchedPoints1 = prevPoints(indexPairs(:, 1));
         matchedPoints2 = currPoints(indexPairs(:, 2));
+        if plot_on
+            subplot(2,2,3)
+            title('Matched features from first to second view')
+            
+            hold on
+            imshow(img)
+            plot(currPoints.Location(:,1),currPoints.Location(:,2),'m<'); %detected points
+            % plot(currPoints.Location(indexPairs(:,2),1),currPoints.Location(indexPairs(:,2),2),'w*'); %matched points
+        
+        
+            
+            showMatchedFeatures(img,img,matchedPoints1,matchedPoints2);
+        end
 
         % Estimate the pose of the current view relative to the previous view.
         [orient, loc, inlierIdx] = helperEstimateRelativePose(...
             matchedPoints1, matchedPoints2, intrinsics);
             
         % Exclude epipolar outliers.
-%         indexPairs = indexPairs(inlierIdx, :);
-          
+        indexPairs = indexPairs(inlierIdx, :);
+        if plot_on
+            subplot(2,2,4)
+            TrackedPoints1 = prevPoints(indexPairs(:, 1));
+            TrackedPoints2 = currPoints(indexPairs(:, 2));
+            showMatchedFeatures(img,img,TrackedPoints1,TrackedPoints2);
+            title('Tracked points after motion estimation and outlier rejection')
+        end
         
         % return pose and match capability
 %         matched_points = numel(indexPairs);
