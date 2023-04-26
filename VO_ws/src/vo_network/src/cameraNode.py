@@ -12,8 +12,10 @@ os.environ['ROS_MASTER_URI'] = 'http://192.168.1.33:11311'
 user = os.environ['USER']
 if user == "sage":
     usb_chan = 2
+    intrinsics_dir = "sage/Documents/ROS_helloworld"
 if user == "orangepi":
     usb_chan = 1
+    intrinsics_dir = "orangepi/ROS_helloworld"
 else:
     usb_chan = 2 #guess at default value?
 
@@ -35,7 +37,7 @@ def publishImages():
     rate = rospy.Rate(10) #5hz
     cap = cv.VideoCapture(usb_chan)
     cap.set(cv.CAP_PROP_AUTOFOCUS, 0)
-    mtx, dist = load_intrinsics("./VO_ws/")
+    mtx, dist = load_intrinsics("/home/{}/VO_ws/".format(intrinsics_dir))
     while not rospy.is_shutdown() & cap.isOpened():
         
         ret, frame = cap.read()
