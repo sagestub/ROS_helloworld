@@ -9,10 +9,17 @@ Python setup steps taken:
 - `sudo apt update` to update latest packages and updates for Ubuntu
 - `sudo apt install python3-pip` to get pip packages to install
 - `sudo apt install python3.8-venv` to enable the creation of virtual environments
+- `sudo apt-get install ros-noetic-vision-opencv` required package
 - ~~`sudo apt install python3.10-venv` to get virtual envirionments for Ubuntu python 3.10~~ use this for python 3.10
 - `python3 -m venv ROS544proj` in a new folder (`cd ~/pyenvs`) to create virtual environment named "ROS544proj"
 - `source ~/pyenvs/ROS544proj/bin/activate` to activate/open up a specific environment
 - `pip install numpy` to install numpy - repeat for desired packages
+- `pip install --upgrade setuptools wheel` avoids error when updating empy
+- `pip install empy` avoids catkin_make error when compiling ROS packages
+- `pip install catkin_pkg` required for catkin_make
+- `pip install opencv-python`
+- `pip install pyyaml`
+- `pip install rospkg`
 - `deactivate` to exit virtual environment
 
 ROS setup steps:
@@ -39,6 +46,11 @@ To create a ROS package:
         ```
 - navigate back up to your workspace parent directory `cd ..` and run `catkin_make` again to compile changes and create the package dependencies- this will populate your build folder with the package files
 - can add `source ~/rosPkgEx/devel/setup.bash` to the .bashrc so that the system can find your package when running
+
+Cloning a ROS package:
+- run `git clone ...` command
+- run `rosdep install --from-paths /path/to/your/catkin_ws/src --ignore-src`
+- remove the ./build and ./devel directories in each workspace and re-run `catkin_make`
 
 Connecting nodes/ Network stuff:
 - connect to orangepi over ssh using `ssh orangepi@192.168.1.29`
