@@ -3,7 +3,7 @@ clear all
 clf
 %% start ros session with matlab node connected to local network master
 masterURI ='http://192.168.1.33:11311' 
-localURI = 'http://192.168.1.9';
+% localURI = 'http://192.168.1.9';
 
 rosinit(masterURI)
 %% Initialize the node running VO algorithm on Matlab

@@ -6,7 +6,6 @@ function voCallbackFn(~,imgMsg)
     img = rgb2gray(readImage(imgMsg));
     global rosmsg_handles
     persistent prevImg
-    plot_on = 0;
     dt = 1/5; %images are sent at a rate of 5Hz
     focalLength    = [591.1707 592.5926];        % specified in units of pixels
     principalPoint = [316.807 228.4456];        % in pixels [x, y]
@@ -100,8 +99,8 @@ function voCallbackFn(~,imgMsg)
             matchedPoints1, matchedPoints2, intrinsics);
             
         % Exclude epipolar outliers.
-        indexPairs = indexPairs(inlierIdx, :);
-        if plot_on
+%         indexPairs = indexPairs(inlierIdx, :);
+          if plot_on
             subplot(2,2,4)
             TrackedPoints1 = prevPoints(indexPairs(:, 1));
             TrackedPoints2 = currPoints(indexPairs(:, 2));

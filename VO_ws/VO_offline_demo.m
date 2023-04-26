@@ -1,4 +1,35 @@
-clc, clear all
+%% Start ROS
+clear all
+clf
+%% start ros session with matlab node connected to local network master
+masterURI ='http://192.168.1.33:11311' 
+localURI = 'http://192.168.1.9';
+
+rosinit(masterURI)
+%% Initialize the node running VO algorithm on Matlab
+% nodeName = rosgenmsg('MatlabNode');
+% masterHost = 'http://192.168.1.33:11311';
+suffix = num2str(randi([0,1000]));
+nodeName = ['vo_node','_',suffix]
+
+vo_node = robotics.ros.Node(nodeName);
+
+%% Initialize publisher and subscriber
+%create global handle for callback fuction to use for
+%reading and publishing values
+global rosmsg_handles 
+% rosmsg_handles.imgSub = robotics.ros.Subscriber(vo_node,'/img',@voCallbackFn);
+
+rosmsg_handles.posePub = robotics.ros.Publisher(vo_node,'/pose','geometry_msgs/Pose');
+rosmsg_handles.posePubmsg = rosmessage(rosmsg_handles.posePub);
+
+rosmsg_handles.markerPub = robotics.ros.Publisher(vo_node,'/marker','visualization_msgs/Marker');
+rosmsg_handles.markerPubmsg = rosmessage(rosmsg_handles.markerPub);
+
+rosmsg_handles.imgPub = robotics.ros.Publisher(vo_node,'/img','sensor_msgs/Image');
+rosmsg_handles.imgPubmsg = rosmessage(rosmsg_handles.imgPub);
+
+%% Run VO algorithm on pre-recorded images
 
 images = dir(fullfile(pwd,'images', '*.jpg'));
 plot_on = 1;
@@ -14,18 +45,41 @@ intrinsics = cameraIntrinsics(focalLength, principalPoint, imageSize);
 for i = 1:numel(images)
     file_name = images(i).name
     file_path = fullfile(pwd,'images',file_name);
+    img = imread(file_path);
+    msg.Encoding = 'rgb8';
+    writeImage(rosmsg_handles.imgPubmsg,img);
+    send(rosmsg_handles.imgPub, rosmsg_handles.imgPubmsg)
     img = rgb2gray(imread(file_path));
 
     if i==1
-%         rosmsg_handles.posePubmsg.Position.X = 0.0;
-%         rosmsg_handles.posePubmsg.Position.Y = 0.0;
-%         rosmsg_handles.posePubmsg.Position.Z = 0.0;
-%         rosmsg_handles.posePubmsg.Orientation.X = 0.0;
-%         rosmsg_handles.posePubmsg.Orientation.Y = 0.0;
-%         rosmsg_handles.posePubmsg.Orientation.Z = 0.0;
-%         rosmsg_handles.posePubmsg.Orientation.W = 1.0;
-%         print(rosmsg_handles.posePubmsg)
-%         prevPose = rosmsg_handles.posePubmsg;
+%         %instantiate and publish starting position and orientation
+        rosmsg_handles.posePubmsg.Position.X = 0.0;
+        rosmsg_handles.posePubmsg.Position.Y = 0.0;
+        rosmsg_handles.posePubmsg.Position.Z = 0.0;
+        rosmsg_handles.posePubmsg.Orientation.X = 0.0;
+        rosmsg_handles.posePubmsg.Orientation.Y = 0.0;
+        rosmsg_handles.posePubmsg.Orientation.Z = 0.0;
+        rosmsg_handles.posePubmsg.Orientation.W = 1.0;
+        send(rosmsg_handles.posePub, rosmsg_handles.posePubmsg)
+        rosmsg_handles.markerPubmsg.Header.FrameId = "map";
+        rosmsg_handles.markerPubmsg.Header.Stamp = rostime('now');
+        rosmsg_handles.markerPubmsg.Type = 0; % Arrow
+        rosmsg_handles.markerPubmsg.Action = 0; % Add
+        rosmsg_handles.markerPubmsg.Scale.X = 1.0;
+        rosmsg_handles.markerPubmsg.Scale.Y = 0.1;
+        rosmsg_handles.markerPubmsg.Scale.Z = 0.1;
+        rosmsg_handles.markerPubmsg.Color.R = 0.0;
+        rosmsg_handles.markerPubmsg.Color.G = 0.0;
+        rosmsg_handles.markerPubmsg.Color.B = 1.0;
+        rosmsg_handles.markerPubmsg.Color.A = 1.0;
+        rosmsg_handles.markerPubmsg.Pose.Position.X = 0.0;
+        rosmsg_handles.markerPubmsg.Pose.Position.Y = 0.0;
+        rosmsg_handles.markerPubmsg.Pose.Position.Z = 0.0;
+        rosmsg_handles.markerPubmsg.Pose.Orientation.X = 0.0;
+        rosmsg_handles.markerPubmsg.Pose.Orientation.Y = 0.0;
+        rosmsg_handles.markerPubmsg.Pose.Orientation.Z = 0.0;
+        rosmsg_handles.markerPubmsg.Pose.Orientation.W = 1.0;
+        send(rosmsg_handles.markerPub, rosmsg_handles.markerPubmsg);
         prevImg = img;
     else
         % Detect previous image points and features
@@ -102,8 +156,34 @@ for i = 1:numel(images)
         % return pose and match capability
         matched_points = numel(indexPairs);
         inliers = numel(inlierIdx);
-        orient
-        loc
+        quat = rotm2quat(orient);
+        rosmsg_handles.posePubmsg.Position.X = loc(1);
+        rosmsg_handles.posePubmsg.Position.Y = loc(2);
+        rosmsg_handles.posePubmsg.Position.Z = loc(3);
+        rosmsg_handles.posePubmsg.Orientation.X = quat(1);
+        rosmsg_handles.posePubmsg.Orientation.Y = quat(2);
+        rosmsg_handles.posePubmsg.Orientation.Z = quat(3);
+        rosmsg_handles.posePubmsg.Orientation.W = quat(4);
+        send(rosmsg_handles.posePub, rosmsg_handles.posePubmsg);
+        rosmsg_handles.markerPubmsg.Header.FrameId = "map";
+        rosmsg_handles.markerPubmsg.Header.Stamp = rostime('now');
+        rosmsg_handles.markerPubmsg.Type = 0; % Arrow
+        rosmsg_handles.markerPubmsg.Action = 0; % Add
+        rosmsg_handles.markerPubmsg.Scale.X = 1.0;
+        rosmsg_handles.markerPubmsg.Scale.Y = 0.1;
+        rosmsg_handles.markerPubmsg.Scale.Z = 0.1;
+        rosmsg_handles.markerPubmsg.Color.R = 0.0;
+        rosmsg_handles.markerPubmsg.Color.G = 0.0;
+        rosmsg_handles.markerPubmsg.Color.B = 1.0;
+        rosmsg_handles.markerPubmsg.Color.A = 1.0;
+        rosmsg_handles.markerPubmsg.Pose.Position.X = loc(1);
+        rosmsg_handles.markerPubmsg.Pose.Position.Y = loc(2);
+        rosmsg_handles.markerPubmsg.Pose.Position.Z = loc(3);
+        rosmsg_handles.markerPubmsg.Pose.Orientation.X = quat(1);
+        rosmsg_handles.markerPubmsg.Pose.Orientation.Y = quat(2);
+        rosmsg_handles.markerPubmsg.Pose.Orientation.Z = quat(3);
+        rosmsg_handles.markerPubmsg.Pose.Orientation.W = quat(4);
+        send(rosmsg_handles.markerPub, rosmsg_handles.markerPubmsg);
         prevImg = img;
     end
 
