@@ -47,6 +47,10 @@ To create a ROS package:
 - navigate back up to your workspace parent directory `cd ..` and run `catkin_make` again to compile changes and create the package dependencies- this will populate your build folder with the package files
 - can add `source ~/rosPkgEx/devel/setup.bash` to the .bashrc so that the system can find your package when running
 
+Creating rospy scripts
+- my python nodes each have a python script, patterned after [this tutorial](http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28python%29) and the associated videos
+- further tutorials were reference from [ROS here](http://wiki.ros.org/ROS/Tutorials)
+
 Cloning a ROS package:
 - run `git clone ...` command
 - run `rosdep install --from-paths /path/to/your/catkin_ws/src --ignore-src`
